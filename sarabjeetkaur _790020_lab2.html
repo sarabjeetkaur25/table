@@ -1,0 +1,73 @@
+<html>
+<font size="8" color="green">Final test lab</font><br><br>
+<div id="remove-element">
+    Number of rows: <input type="text" id="t1" /><br><br>
+    Number of cols: <input type="text" id="t2" /><br><br>
+    <button id="b1" onclick="generateTable()">Generate Table</button><br><br>
+</div>
+
+
+<button id="b2" onclick="addColumn()">Add Column</button>
+
+<button id="b3" onclick="addRow()">Add Row</button>
+
+<script type="text/javascript">
+    // ADD NEW ROW
+    function addRow() {
+        var getRootElement = document.getElementById('add-new-element').getElementsByTagName('tbody')[0];
+        var getTotalRows = getRootElement.getElementsByTagName('tr');
+        var cloneNewElement = cloneElement(getTotalRows[getTotalRows.length - 1]);
+        cloneNewElement = replaceAllString(cloneNewElement.innerHTML, 'row-' + (getTotalRows.length), 'row-' + (getTotalRows.length + 1));
+        var data = document.createElement('tr');
+        data.innerHTML = cloneNewElement;
+        getRootElement.appendChild(data);
+    }
+    function replaceAllString(str, find, replace) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
+    // ADD NEW COLUMN
+    function addColumn() {
+        var getTotalRows = document.getElementById('add-new-element').getElementsByTagName('tr'), i = 0, ro, col, cloneNewElement;
+        while (ro = getTotalRows[i++]) {
+            col = ro.getElementsByTagName('td');
+            cloneNewElement = cloneElement(col[col.length - 1]);
+            cloneNewElement = replaceAllString(cloneNewElement.innerHTML, 'column-' + (col.length), 'column-' + (col.length + 1));
+            var data = document.createElement('td');
+            data.innerHTML = cloneNewElement;
+            col[0].parentNode.appendChild(data);
+        }
+    }
+    function cloneElement(getElement) {
+        var cloumnelement = getElement.cloneNode(true);
+        return cloumnelement;
+    }
+    function generateTable() {
+        var body = document.getElementsByTagName("body")[0];
+        var row_count = document.getElementById("t1").value;
+        var column_count = document.getElementById("t2").value;
+        var tbl = document.createElement("table");
+        tbl.setAttribute("id", "add-new-element");
+        var tblBody = document.createElement("tbody");
+        for (var i = 1; i <= row_count; i++) {
+            var row = document.createElement("tr");
+            row.setAttribute("id", i);
+            for (var j = 1; j <= column_count; j++) {
+                var cell = document.createElement("td");
+                var cellText = document.createTextNode("row-" + i + ", column-" + j);
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+            }
+
+            tblBody.appendChild(row);
+        }
+
+        tbl.appendChild(tblBody);
+        body.appendChild(tbl);
+        tbl.setAttribute("border", "2");
+        var generateButton = document.getElementById("remove-element");
+        generateButton.remove();
+    }
+
+</script>
+
+</html>
